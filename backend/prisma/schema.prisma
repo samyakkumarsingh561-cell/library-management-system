@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionStatus {
+  ISSUED
+  RETURNED
+}
+
+model Book {
+  id              String        @id @default(cuid())
+  title           String
+  author          String
+  isbn            String        @unique
+  category        String
+  totalCopies     Int
+  availableCopies Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  transactions    Transaction[]
+
+  @@index([title])
+  @@index([author])
+  @@index([category])
+}
+
+model Transaction {
+  id           String            @id @default(cuid())
+  bookId       String
+  borrowerName String
+  borrowerId   String
+  issueDate    DateTime          @default(now())
+  dueDate      DateTime
+  returnDate   DateTime?
+  status       TransactionStatus @default(ISSUED)
+  book         Book              @relation(fields: [bookId], references: [id], onDelete: Restrict)
+
+  @@index([status])
+  @@index([bookId, status])
+}
