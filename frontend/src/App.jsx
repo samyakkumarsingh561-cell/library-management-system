@@ -1,5 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Library, Activity, BarChart3, BookOpen, CheckCircle2, ChevronRight, CircleAlert, LayoutDashboard } from 'lucide-react'
+import { 
+  Library, 
+  Activity, 
+  BarChart3, 
+  BookOpen, 
+  CheckCircle2, 
+  ChevronRight, 
+  CircleAlert, 
+  LayoutDashboard, 
+  Plus, 
+  Settings2, 
+  Menu, 
+  QrCode, 
+  X,
+  Users
+} from 'lucide-react'
 import * as XLSX from 'xlsx'
 import { api } from './api'
 import AddBookModal from './components/AddBookModal'
