@@ -14,7 +14,12 @@ import {
   QrCode, 
   X,
   Users,
-  Clock3
+  Clock3,
+  Search,
+  Download,
+  FileSpreadsheet,
+  Trash2,
+  Edit
 } from 'lucide-react'
 import * as XLSX from 'xlsx'
 import { api } from './api'
