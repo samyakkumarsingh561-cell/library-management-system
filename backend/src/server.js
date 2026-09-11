@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import basicAuth from 'express-basic-auth'
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
@@ -13,6 +14,11 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
+const adminAuth = basicAuth({
+  users: { 'admin': 'library2026' },
+  challenge: true,
+  unauthorizedResponse: 'Unauthorized access.'
+})
 const bookInput = z.object({
   title: z.string().trim().min(1),
   author: z.string().trim().min(1),
@@ -61,7 +67,7 @@ app.get('/api/books', async (req, res, next) => {
   } catch (error) { next(error) }
 })
 
-app.post('/api/books', async (req, res, next) => {
+app.post('/api/books', adminAuth, async (req, res, next) => {
   try {
     const data = bookInput.parse(req.body)
     const book = await prisma.book.create({ data: { ...data, availableCopies: data.totalCopies }, select: bookSelect })
@@ -69,7 +75,7 @@ app.post('/api/books', async (req, res, next) => {
   } catch (error) { next(error) }
 })
 
-app.delete('/api/books/:id', async (req, res, next) => {
+app.delete('/api/books/:id', adminAuth, async (req, res, next) => {
   try {
     const active = await prisma.transaction.count({ where: { bookId: req.params.id, status: 'ISSUED' } })
     if (active) return res.status(409).json({ message: 'Return all active copies before removing this book.' })
