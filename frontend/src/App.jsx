@@ -13,7 +13,8 @@ import {
   Menu, 
   QrCode, 
   X,
-  Users
+  Users,
+  Clock3
 } from 'lucide-react'
 import * as XLSX from 'xlsx'
 import { api } from './api'
